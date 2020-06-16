@@ -92,7 +92,7 @@ export default {
   data() {
     return {
       newTodo: "",
-      idForTodo: 3,
+      idForTodo: 4,
       beforeEditCache: "",
       filter: "all",
       todos: [
@@ -191,6 +191,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+@import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css");
 .todo-input {
   width: 100%;
   padding: 10px 18px;
@@ -207,6 +208,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  animation-duration: 0.3s;
 }
 
 .remove-item {
