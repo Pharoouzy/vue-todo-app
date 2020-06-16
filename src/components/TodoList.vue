@@ -9,8 +9,23 @@
     />
     <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
       <div class="todo-item-left">
-        <div class="todo-item-label">{{ todo.title }}</div>
-        <input type="text" v-model="todo.title" class="todo-item-edit" />
+        <div
+          v-if="!todo.editing"
+          @dblclick="editTodo(todo)"
+          class="todo-item-label"
+        >
+          {{ todo.title }}
+        </div>
+        <input
+          v-else
+          type="text"
+          v-model="todo.title"
+          class="todo-item-edit"
+          @blur="doneEdit(todo)"
+          @keyup.enter="doneEdit(todo)"
+          @keyup.esc="cancelEdit(todo)"
+          v-focus
+        />
       </div>
       <div class="remove-item" @click="removeTodo(index)">
         &times;
@@ -26,19 +41,29 @@ export default {
     return {
       newTodo: "",
       idForTodo: 3,
+      beforeEditCache: "",
       todos: [
         {
           id: 1,
           title: "Finish Vue Course",
-          completed: false
+          completed: false,
+          editing: false
         },
         {
           id: 2,
           title: "Take Over the world",
-          completed: false
+          completed: false,
+          editing: false
         }
       ]
     };
+  },
+  directives: {
+    focus: {
+      inserted: function(element) {
+        element.focus();
+      }
+    }
   },
   methods: {
     addTodo() {
@@ -57,6 +82,17 @@ export default {
     },
     removeTodo(index) {
       this.todos.splice(index, 1);
+    },
+    editTodo(todo) {
+      this.beforeEditCache = todo.title;
+      todo.editing = true;
+    },
+    doneEdit(todo) {
+      todo.editing = false;
+    },
+    cancelEdit(todo) {
+      todo.title = this.beforeEditCache
+      todo.editing = false;
     }
   }
 };
