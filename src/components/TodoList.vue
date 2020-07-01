@@ -18,8 +18,6 @@
         :todo="todo"
         :index="index"
         :checkAll="!anyRemaining"
-        @removedTodo="removeTodo"
-        @finishedEdit="finishedEdit"
       >
       </TodoItem>
     </transition-group>
@@ -68,6 +66,7 @@
 
 <script>
 import TodoItem from "./TodoItem";
+import { EventBus } from "@/libs/event-bus";
 export default {
   name: "TodoList",
   components: {
@@ -100,6 +99,10 @@ export default {
         }
       ]
     };
+  },
+  created() {
+    EventBus.$on("removedTodo", index => this.removeTodo(index));
+    EventBus.$on("finishedEdit", data => this.finishedEdit(data));
   },
   computed: {
     remaining() {
