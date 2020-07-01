@@ -1,9 +1,15 @@
 <template>
-  <div class=""></div>
+  <div>{{ remaining }} items left</div>
 </template>
 
 <script>
 export default {
-  name: "TodoItemsRemaining"
+  name: "TodoItemsRemaining",
+  props: {
+    remaining: {
+      type: Number,
+      required: true
+    }
+  }
 };
 </script>

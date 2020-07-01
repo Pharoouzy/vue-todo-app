@@ -61,6 +61,9 @@ export default {
   created() {
     EventBus.$on("pluralize", this.handlePluralize);
   },
+  beforeDestroy() {
+    EventBus.$off("pluralize", this.handlePluralize);
+  },
   watch: {
     checkAll() {
       this.completed = this.checkAll ? true : this.todo.completed;
