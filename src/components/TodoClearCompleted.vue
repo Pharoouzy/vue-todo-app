@@ -5,18 +5,16 @@
 </template>
 
 <script>
-import { EventBus } from "@/libs/event-bus";
 export default {
   name: "TodoClearCompleted",
-  props: {
-    showClearCompletedButton: {
-      type: Boolean,
-      required: true
+  computed: {
+    showClearCompletedButton() {
+      return this.$store.getters.showClearCompletedButton;
     }
   },
   methods: {
     clearCompleted() {
-      EventBus.$emit("clearCompletedTodos");
+      this.$store.commit("clearCompleted");
     }
   }
 };

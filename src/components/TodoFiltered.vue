@@ -19,21 +19,16 @@
 </template>
 
 <script>
-import { EventBus } from "@/libs/event-bus";
 export default {
   name: "TodoFiltered",
-  data() {
-    return {
-      filter: "all"
-    };
+  computed: {
+    filter() {
+      return this.$store.state.filter;
+    }
   },
   methods: {
-    allChecked() {
-      EventBus.$emit("checkAllChanged", this.anyRemaining);
-    },
     changeFilter(filter) {
-      this.filter = filter;
-      EventBus.$emit("filterChanged", filter);
+      this.$store.state.filter = filter;
     }
   }
 };

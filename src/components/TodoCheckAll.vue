@@ -8,18 +8,18 @@
 </template>
 
 <script>
-import { EventBus } from "@/libs/event-bus";
 export default {
   name: "TodoCheckAll",
-  props: {
-    anyRemaining: {
-      type: Boolean,
-      required: true
+  computed: {
+    anyRemaining() {
+      return this.$store.getters.anyRemaining;
     }
   },
   methods: {
     allChecked() {
-      EventBus.$emit("checkAllChanged", this.anyRemaining);
+      this.$store.state.todos.forEach(
+        todo => (todo.completed = event.target.checked)
+      );
     }
   }
 };
