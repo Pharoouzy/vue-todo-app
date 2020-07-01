@@ -30,9 +30,9 @@
       <TodoFiltered />
       <div>
         <transition name="fade">
-          <button v-if="showClearCompletedButton" @click="clearCompleted">
-            Clear Completed
-          </button>
+          <TodoClearCompleted
+            :showClearCompletedButton="showClearCompletedButton"
+          />
         </transition>
       </div>
     </div>
@@ -44,14 +44,17 @@ import TodoItem from "./TodoItem";
 import TodoItemsRemaining from "./TodoItemsRemaining";
 import TodoCheckAll from "./TodoCheckAll";
 import TodoFiltered from "./TodoFiltered";
+import TodoClearCompleted from "./TodoClearCompleted";
 import { EventBus } from "@/libs/event-bus";
+
 export default {
   name: "TodoList",
   components: {
     TodoItem,
     TodoItemsRemaining,
     TodoCheckAll,
-    TodoFiltered
+    TodoFiltered,
+    TodoClearCompleted
   },
   data() {
     return {
@@ -85,6 +88,14 @@ export default {
     EventBus.$on("removedTodo", index => this.removeTodo(index));
     EventBus.$on("finishedEdit", data => this.finishedEdit(data));
     EventBus.$on("checkAllChanged", checked => this.checkAllTodos(checked));
+    EventBus.$on("filterChanged", filter => (this.filter = filter));
+    EventBus.$on("clearCompletedTodos", () => this.clearCompleted());
+  },
+  beforeDestroy() {
+    EventBus.$off("removedTodo", index => this.removeTodo(index));
+    EventBus.$off("finishedEdit", data => this.finishedEdit(data));
+    EventBus.$off("checkAllChanged", checked => this.checkAllTodos(checked));
+    EventBus.$off("filterChanged", filter => (this.filter = filter));
   },
   computed: {
     remaining() {

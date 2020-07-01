@@ -1,14 +1,17 @@
 <template>
   <div>
-    <button :class="{ active: filter == 'all' }" @click="filter = 'all'">
+    <button :class="{ active: filter == 'all' }" @click="changeFilter('all')">
       All
     </button>
-    <button :class="{ active: filter == 'active' }" @click="filter = 'active'">
+    <button
+      :class="{ active: filter == 'active' }"
+      @click="changeFilter('active')"
+    >
       Active
     </button>
     <button
       :class="{ active: filter == 'completed' }"
-      @click="filter = 'completed'"
+      @click="changeFilter('completed')"
     >
       Completed
     </button>
@@ -19,15 +22,18 @@
 import { EventBus } from "@/libs/event-bus";
 export default {
   name: "TodoFiltered",
-  props: {
-    filter: {
-      type: String,
-      required: true
-    }
+  data() {
+    return {
+      filter: "all"
+    };
   },
   methods: {
     allChecked() {
       EventBus.$emit("checkAllChanged", this.anyRemaining);
+    },
+    changeFilter(filter) {
+      this.filter = filter;
+      EventBus.$emit("filterChanged", filter);
     }
   }
 };
